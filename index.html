@@ -38,25 +38,29 @@
     <a class="nav-link" href="#" id="nav-all">Hack or Snooze</a>
   </div>
   <div class="nav-right">
-    <a class="nav-link" href="#" id="nav-submit">Submit Story</a>
+    <a class="nav-link hidden" href="#" id="nav-submit">Submit Story</a>
     <a class="nav-link" href="#" id="nav-login">login/signup</a>
     <a class="nav-link" href="#" id="nav-user-profile"></a>
     <a class="hidden" id="nav-logout" href="#"><small>(logout)</small></a>
   </div>
 </nav>
 
+<!-- area for -->
 <section class="story-form-container container">
   <form id="story-form" class="hidden" action="">
-    <label for="title">Title
-      <input id="story-title" type="text" required>      
-    </label>
-    <label for="author">Author
-      <input id="author" type="text" required>      
-    </label>
-    <label for="story-url">URL
-      <input id="story-url" type="text" required>      
-    </label>
-    <button>Submit</button>
+    <div>
+      <label for="story-title">Title</label>
+      <input id="story-title" type="text" required>
+    </div>     
+    <div>
+      <label for="author">Author</label>
+      <input id="author" type="text" required>
+    </div>
+    <div>
+      <label for="story-url">URL</label>
+      <input id="story-url" type="text" required>
+    </div>
+    <button type="submit">Submit</button>
   </form>
 </section>
 

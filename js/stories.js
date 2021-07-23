@@ -31,6 +31,7 @@ function generateStoryMarkup(story) {
         <small class="story-hostname">(${hostName})</small>
         <small class="story-author">by ${story.author}</small>
         <small class="story-user">posted by ${story.username}</small>
+        <span>${putFavoriteMarkupOnStory(story)}</span>
       </li>
     `);
 }
@@ -45,6 +46,7 @@ function putStoriesOnPage() {
   // loop through all of our stories and generate HTML for them
   for (let story of storyList.stories) {
     const $story = generateStoryMarkup(story);
+    putFavoriteMarkupOnStory($story);
     $allStoriesList.append($story);
   }
 
@@ -52,11 +54,27 @@ function putStoriesOnPage() {
 }
 
 /** submits story from form */
-function submitStory() {
+function submitStory(evt) {
+
+  evt.preventDefault();
   
   const title = $('#story-title')[0].value;
   const url = $('#story-url')[0].value;
   const author = $('#author')[0].value;
   
   storyList.addStory(currentUser, {title, author, url});
+}
+
+$("#story-form button").click(submitStory);
+
+/** generate favorite markup */
+function putFavoriteMarkupOnStory(story) {
+
+  if (currentUser.favorites.some(s => s.storyId === story.storyId)) {
+    return "unfavorite";
+  }
+  else { 
+    return "favorite";
+  }
+
 }

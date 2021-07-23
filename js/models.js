@@ -206,4 +206,10 @@ class User {
       return null;
     }
   }
+
+  addFavoriteStory(story) {
+    
+    this.favorites.push(story);
+
+  }
 }
