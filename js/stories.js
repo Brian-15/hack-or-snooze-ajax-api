@@ -31,7 +31,7 @@ function generateStoryMarkup(story) {
         <small class="story-hostname">(${hostName})</small>
         <small class="story-author">by ${story.author}</small>
         <small class="story-user">posted by ${story.username}</small>
-        <span>${putFavoriteMarkupOnStory(story)}</span>
+        <span class="favorite">${putFavoriteMarkupOnStory(story)}</span>
       </li>
     `);
 }
