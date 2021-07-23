@@ -38,8 +38,8 @@ function updateNavOnLogin() {
 /** handle form submission */
 
 function navSubmitStoryClick() {
-  submitStory();
-  $('input').text('');
+  $('#story-form').show();
 }
 
-$('#nav-submit').click(navSubmitStoryClick);
+$('#nav-submit').on("click", navSubmitStoryClick);
+
