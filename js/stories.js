@@ -23,6 +23,7 @@ function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
+
   return $(`
       <li id="${story.storyId}">
         <a href="${story.url}" target="a_blank" class="story-link">
@@ -31,7 +32,6 @@ function generateStoryMarkup(story) {
         <small class="story-hostname">(${hostName})</small>
         <small class="story-author">by ${story.author}</small>
         <small class="story-user">posted by ${story.username}</small>
-        <span class="favorite">${putFavoriteMarkupOnStory(story)}</span>
       </li>
     `);
 }
@@ -46,10 +46,10 @@ function putStoriesOnPage() {
   // loop through all of our stories and generate HTML for them
   for (let story of storyList.stories) {
     const $story = generateStoryMarkup(story);
-    putFavoriteMarkupOnStory($story);
     $allStoriesList.append($story);
   }
 
+  $allStoriesList.click(handleFavoriteClick);
   $allStoriesList.show();
 }
 
@@ -67,14 +67,38 @@ function submitStory(evt) {
 
 $("#story-form button").click(submitStory);
 
-/** generate favorite markup */
-function putFavoriteMarkupOnStory(story) {
+/** generate favorite markup from currentUser's favorites */
+function putFavoriteMarkupOnStories() {
 
-  if (currentUser.favorites.some(s => s.storyId === story.storyId)) {
-    return "unfavorite";
-  }
-  else { 
-    return "favorite";
-  }
+  $allStoriesList.children().toArray().forEach(li => {
+    const isFavorite = currentUser.favorites.some(fStory => li.id === fStory.storyId);
+    const favoriteEl = $("<span>").attr("id", "fav");
+    if (isFavorite) {
+      favoriteEl.text("unfavorite").addClass("favorited");
+    }
+    else {
+      favoriteEl.text("favorite");
+    }
+    $(li).append(favoriteEl);
+  });
 
+}
+
+/** handle favorite click */
+function handleFavoriteClick(evt) {
+  if (!evt.target.tagName === "SPAN") return;
+
+  const $span = $(evt.target);
+  const id = $span.parent()[0].id;
+  if ($span[0].classList.contains("favorited")) {
+    currentUser.favorites = currentUser.favorites.filter(story => story.storyId !== id);
+    $span.text("favorite");
+  }
+  else {
+    currentUser.favorites.push(storyList.stories.filter(story => story.storyId === id)[0]);
+    $span.text("unfavorite");
+  }
+  console.log(currentUser.favorites);
+
+  $span[0].classList.toggle("favorited");
 }
