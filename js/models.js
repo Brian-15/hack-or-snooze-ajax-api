@@ -233,7 +233,7 @@ class User {
   async removeFavoriteStory(storyId) {
 
     try {
-      
+
       const response = await axios.delete(`${BASE_URL}/users/${this.username}/favorites/${storyId}`, {
         data: {"token": this.loginToken}
       });
@@ -246,11 +246,28 @@ class User {
         createdAt: user.createdAt,
         favorites: user.favorites,
         ownStories: user.stories,
-      }, currentUser.loginToken);
+      }, this.loginToken);
 
     } catch (err) {
       console.error("removeFavoriteStory failed", err);
       return null;
+    }
+  }
+
+  async removeOwnStory(storyId) {
+
+    try {
+
+      await axios.delete(`${BASE_URL}/stories/${storyId}`, {
+        data: {"token": this.loginToken}
+      });
+
+      this.ownStories = this.ownStories.filter(story => story.storyId !== storyId);
+
+      return true;
+
+    } catch (err) {
+      console.error("removeOwnStory failed:", err);
     }
   }
 }

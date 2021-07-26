@@ -74,6 +74,8 @@ function putOwnStoriesOnPage() {
   // loop through all of our stories and generate HTML for them
   for (let story of currentUser.ownStories) {
     const $story = generateStoryMarkup(story);
+    const $deleteBtn = $("<button>").attr("id", "delete").text("DELETE");
+    $story.append($deleteBtn);
     $allStoriesList.append($story);
   }
 
@@ -127,4 +129,15 @@ async function handleFavoriteClick(evt) {
     $span.text("unfavorite");
   }
   $span[0].classList.toggle("favorited");
+}
+
+/** handle delete story click */
+async function handleDeleteClick(evt) {
+  if (!evt.target.tagName === "BUTTON") return;
+
+  const $btn = $(evt.target);
+  const id = $btn.parent()[0].id;
+
+  await currentUser.removeOwnStory(id);
+  $btn.parent().remove();
 }

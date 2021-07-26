@@ -55,9 +55,11 @@ function handleNavFavorites() {
 
 $navFavorites.click(handleNavFavorites);
 
+/** nav own stories */
 function handleNavStories() {
   hidePageComponents();
   putOwnStoriesOnPage();
+  $allStoriesList.unbind().click(handleDeleteClick);
 }
 
 $navMyStories.click(handleNavStories);
