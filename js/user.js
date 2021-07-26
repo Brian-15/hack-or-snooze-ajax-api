@@ -115,6 +115,7 @@ function updateUIOnUserLogin() {
   $signupForm.hide();
   $loginForm.hide();
   putFavoriteMarkupOnStories();
+  $allStoriesList.click(handleFavoriteClick);
   $allStoriesList.show();
 
   updateNavOnLogin();

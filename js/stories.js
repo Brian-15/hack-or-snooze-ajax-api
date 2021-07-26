@@ -20,7 +20,6 @@ async function getAndShowStoriesOnStart() {
  */
 
 function generateStoryMarkup(story) {
-  // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
 
@@ -39,7 +38,6 @@ function generateStoryMarkup(story) {
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
 function putStoriesOnPage() {
-  console.debug("putStoriesOnPage");
 
   $allStoriesList.empty();
 
@@ -49,7 +47,36 @@ function putStoriesOnPage() {
     $allStoriesList.append($story);
   }
 
-  $allStoriesList.click(handleFavoriteClick);
+  $allStoriesList.show();
+}
+
+/** Gets list of favorite stories from current user, generates their HTML, and puts on page. */
+
+function putFavoriteStoriesOnPage() {
+
+  $allStoriesList.empty();
+
+  // loop through all of our stories and generate HTML for them
+  for (let story of currentUser.favorites) {
+    const $story = generateStoryMarkup(story);
+    $allStoriesList.append($story);
+  }
+
+  $allStoriesList.show();
+}
+
+/** Gets list of stories from current user, generates their HTML, and puts on page. */
+
+function putOwnStoriesOnPage() {
+
+  $allStoriesList.empty();
+
+  // loop through all of our stories and generate HTML for them
+  for (let story of currentUser.ownStories) {
+    const $story = generateStoryMarkup(story);
+    $allStoriesList.append($story);
+  }
+
   $allStoriesList.show();
 }
 

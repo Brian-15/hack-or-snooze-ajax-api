@@ -32,7 +32,7 @@ function updateNavOnLogin() {
   $(".main-nav-links").show();
   $navLogin.hide();
   $navLogOut.show();
-  $navSubmitStory.show();
+  $navLeft.show();
   $navUserProfile.text(`${currentUser.username}`).show();
 }
 
@@ -42,5 +42,22 @@ function navSubmitStoryClick() {
   $('#story-form').show();
 }
 
-$('#nav-submit').on("click", navSubmitStoryClick);
+$navSubmitStory.on("click", navSubmitStoryClick);
 
+/** nav favorites
+ * 
+ */
+
+function handleNavFavorites() {
+  hidePageComponents();
+  putFavoriteStoriesOnPage();
+}
+
+$navFavorites.click(handleNavFavorites);
+
+function handleNavStories() {
+  hidePageComponents();
+  putOwnStoriesOnPage();
+}
+
+$navMyStories.click(handleNavStories);
