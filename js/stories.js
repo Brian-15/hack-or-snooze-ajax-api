@@ -94,7 +94,7 @@ function submitStory(evt) {
   storyList.addStory(currentUser, {title, author, url});
 }
 
-$("#story-form button").click(submitStory);
+$("#story-form button").on("submit", submitStory);
 
 /** generate favorite markup from currentUser's favorites */
 function putFavoriteMarkupOnStories() {

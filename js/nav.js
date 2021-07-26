@@ -40,6 +40,7 @@ function updateNavOnLogin() {
 
 function navSubmitStoryClick() {
   $('#story-form').show();
+  putStoriesOnPage();
 }
 
 $navSubmitStory.on("click", navSubmitStoryClick);
