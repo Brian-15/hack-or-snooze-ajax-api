@@ -207,9 +207,50 @@ class User {
     }
   }
 
-  addFavoriteStory(story) {
+  async addFavoriteStory(storyId) {
     
-    this.favorites.push(story);
+    try {
 
+      const response = await axios.post( `${BASE_URL}/users/${this.username}/favorites/${storyId}`, {
+        "token": this.loginToken
+      });
+
+      let { user } = response.data;
+
+      return new User({
+        username: user.username,
+        name: user.name,
+        createdAt: user.createdAt,
+        favorites: user.favorites,
+        ownStories: user.stories,
+      }, currentUser.loginToken);
+    } catch (err) {
+      console.error("addFavoriteStory failed", err);
+      return null;
+    }
+  }
+
+  async removeFavoriteStory(storyId) {
+
+    try {
+      
+      const response = await axios.delete(`${BASE_URL}/users/${this.username}/favorites/${storyId}`, {
+        data: {"token": this.loginToken}
+      });
+
+      let { user } = response.data;
+
+      return new User({
+        username: user.username,
+        name: user.name,
+        createdAt: user.createdAt,
+        favorites: user.favorites,
+        ownStories: user.stories,
+      }, currentUser.loginToken);
+
+    } catch (err) {
+      console.error("removeFavoriteStory failed", err);
+      return null;
+    }
   }
 }

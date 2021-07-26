@@ -85,20 +85,19 @@ function putFavoriteMarkupOnStories() {
 }
 
 /** handle favorite click */
-function handleFavoriteClick(evt) {
+async function handleFavoriteClick(evt) {
   if (!evt.target.tagName === "SPAN") return;
 
   const $span = $(evt.target);
   const id = $span.parent()[0].id;
+
   if ($span[0].classList.contains("favorited")) {
-    currentUser.favorites = currentUser.favorites.filter(story => story.storyId !== id);
+    currentUser = await currentUser.removeFavoriteStory(id);
     $span.text("favorite");
   }
   else {
-    currentUser.favorites.push(storyList.stories.filter(story => story.storyId === id)[0]);
+    currentUser = await currentUser.addFavoriteStory(id);
     $span.text("unfavorite");
   }
-  console.log(currentUser.favorites);
-
   $span[0].classList.toggle("favorited");
 }
