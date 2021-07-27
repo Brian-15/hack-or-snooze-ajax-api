@@ -129,6 +129,7 @@ async function handleFavoriteClick(evt) {
 }
 
 /** handler function for deleting story upon click
+ *  checks if story is also present in favorites, and deletes it
  *  this event listener is assigned to the story list element
  */
 async function handleDeleteClick(evt) {
@@ -137,7 +138,13 @@ async function handleDeleteClick(evt) {
   const $btn = $(evt.target);
   const id = $btn.parent()[0].id;
 
+  if (currentUser.favorites.some(story => story.storyId === id)) {
+    currentUser = await currentUser.removeFavoriteStory(id);
+  }
+
   storyList.removeStory(id);
   await currentUser.removeOwnStory(id);
+
+  
   $btn.parent().remove();
 }
