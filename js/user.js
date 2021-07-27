@@ -59,8 +59,6 @@ $signupForm.on("submit", signup);
 function logout(evt) {
   console.debug("logout", evt);
   localStorage.clear();
-  // $loginForm.show();
-  // $signupForm.show();
   location.reload();
 }
 
@@ -107,6 +105,7 @@ function saveUserCredentialsInLocalStorage() {
  * - show the stories list
  * - update nav bar options for logged-in user
  * - generate the user profile part of the page
+ * - add event listeners for user favorites and for user story deletion
  */
 
 function updateUIOnUserLogin() {

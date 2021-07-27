@@ -36,7 +36,9 @@ function updateNavOnLogin() {
   $navUserProfile.text(`${currentUser.username}`).show();
 }
 
-/** show form submission */
+/** handler function for submit story navigation link
+ *  displays form and fills DOM with stories from the API
+ */
 
 function navSubmitStoryClick() {
   $storyForm.show();
@@ -45,21 +47,25 @@ function navSubmitStoryClick() {
 
 $navSubmitStory.on("click", navSubmitStoryClick);
 
-/** nav favorites
- * 
+/** handler function for favorites navigation link
+ *  empties list of stories and places user's current favorite stories.
  */
 
-function handleNavFavorites() {
+function navFavoritesClick() {
   hidePageComponents();
   putFavoriteStoriesOnPage();
 }
 
-$navFavorites.click(handleNavFavorites);
+$navFavorites.click(navFavoritesClick);
 
-/** nav own stories */
-function handleNavStories() {
+/** handler function for displaying currentUser's own stories
+ *  
+ *  - empties list of stories and fills with user's stories
+ *  - adds delete button to each story
+ */
+function navMyStories() {
   hidePageComponents();
   putOwnStoriesOnPage();
 }
 
-$navMyStories.click(handleNavStories);
+$navMyStories.click(navMyStories);

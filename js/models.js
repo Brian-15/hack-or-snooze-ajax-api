@@ -97,6 +97,7 @@ class StoryList {
     
   }
 
+  /** Remove story from stories array */
   removeStory(storyId) {
     this.stories = this.stories.filter(story => story.storyId !== storyId);
   }
@@ -218,6 +219,11 @@ class User {
     }
   }
 
+  /** add story to currentUser's favorites in API
+   *  return a new user object containing the updated data
+   * 
+   * - storyId: id of story to add to user favorites
+   */
   async addFavoriteStory(storyId) {
     
     try {
@@ -241,6 +247,11 @@ class User {
     }
   }
 
+  /** remove story from user favorites in API
+   *  returns new user object used to update currentUser
+   * 
+   * - storyId: id of story to remove from user favorites
+   */
   async removeFavoriteStory(storyId) {
 
     try {
@@ -265,6 +276,11 @@ class User {
     }
   }
 
+  /** deletes story from API and from ownStories array of object
+   * 
+   * - storyId: id of story to delete
+   *  
+   */
   async removeOwnStory(storyId) {
 
     try {

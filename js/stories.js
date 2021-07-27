@@ -17,6 +17,7 @@ async function getAndShowStoriesOnStart() {
  * - story: an instance of Story
  *
  * Returns the markup for the story.
+ * If user is logged in, will reveal markup for favorite toggler.
  */
 
 function generateStoryMarkup(story) {
@@ -36,7 +37,6 @@ function generateStoryMarkup(story) {
         ${currentUser? "": "hidden"}>
           ${isFavorited? "Un-favorite": "Favorite"}
         </span>
-        <button class="delete-btn ${currentUser? "": "hidden"}>Remove</button>
       </li>
     `);
 }
@@ -71,7 +71,9 @@ function putFavoriteStoriesOnPage() {
   $allStoriesList.show();
 }
 
-/** Gets list of stories from current user, generates their HTML, and puts on page. */
+/** Gets list of stories from current user, generates their HTML, and puts on page.
+ *  will also append a delete button to each story.
+ */
 
 function putOwnStoriesOnPage() {
 
@@ -80,7 +82,7 @@ function putOwnStoriesOnPage() {
   // loop through all of our stories and generate HTML for them
   for (let story of currentUser.ownStories) {
     const $story = generateStoryMarkup(story);
-    const $deleteBtn = $("<button>").attr("id", "delete").text("DELETE");
+    const $deleteBtn = $("<button>").addClass("delete-btn").text("DELETE");
     $story.append($deleteBtn);
     $allStoriesList.append($story);
   }
@@ -88,23 +90,27 @@ function putOwnStoriesOnPage() {
   $allStoriesList.show();
 }
 
-/** submits story from form */
+/** handler function for story form submission 
+ *  Will reset form inputs upon submission
+*/
 function submitStory(evt) {
 
   evt.preventDefault();
   
-  let title = $('#story-title')[0].value;
-  let url = $('#story-url')[0].value;
-  let author = $('#author')[0].value;
+  let title = $("#story-title")[0].value;
+  let url = $("#story-url")[0].value;
+  let author = $("#author")[0].value;
   
   storyList.addStory(currentUser, {title, author, url});
 
-  [title, url, author] = ["", "", ""];
+  $("#story-form input").val("");
 }
 
 $storyForm.on("submit", submitStory);
 
-/** handle favorite click */
+/** handler function for favoriting story upon click
+ *  this event listener is assigned to the story list element
+ */
 async function handleFavoriteClick(evt) {
   if (!$(evt.target).hasClass("favorite")) return;
 
@@ -122,7 +128,9 @@ async function handleFavoriteClick(evt) {
   $span[0].classList.toggle("favorited");
 }
 
-/** handle delete story click */
+/** handler function for deleting story upon click
+ *  this event listener is assigned to the story list element
+ */
 async function handleDeleteClick(evt) {
   if (evt.target.tagName !== "BUTTON") return;
 
