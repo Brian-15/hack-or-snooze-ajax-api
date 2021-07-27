@@ -24,8 +24,8 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-    // UNIMPLEMENTED: complete this function!
-    return "hostname.com";
+    // from https://developer.mozilla.org/en-US/docs/Web/API/URL/hostname
+    return new URL(this.url).hostname;
   }
 }
 
