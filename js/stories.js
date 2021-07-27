@@ -22,6 +22,7 @@ async function getAndShowStoriesOnStart() {
 function generateStoryMarkup(story) {
 
   const hostName = story.getHostName();
+  const isFavorited = currentUser && currentUser.favorites.some(fav => fav.storyId === story.storyId);
 
   return $(`
       <li id="${story.storyId}">
@@ -31,6 +32,11 @@ function generateStoryMarkup(story) {
         <small class="story-hostname">(${hostName})</small>
         <small class="story-author">by ${story.author}</small>
         <small class="story-user">posted by ${story.username}</small>
+        <span class="favorite ${isFavorited? "favorited": ""}" 
+        ${currentUser? "": "hidden"}>
+          ${isFavorited? "Un-favorite": "Favorite"}
+        </span>
+        <button class="delete-btn ${currentUser? "": "hidden"}>Remove</button>
       </li>
     `);
 }
@@ -87,57 +93,44 @@ function submitStory(evt) {
 
   evt.preventDefault();
   
-  const title = $('#story-title')[0].value;
-  const url = $('#story-url')[0].value;
-  const author = $('#author')[0].value;
+  let title = $('#story-title')[0].value;
+  let url = $('#story-url')[0].value;
+  let author = $('#author')[0].value;
   
   storyList.addStory(currentUser, {title, author, url});
+
+  putStoriesOnPage();
+  [title, url, author] = ["", "", ""];
 }
 
-$("#story-form button").on("submit", submitStory);
-
-/** generate favorite markup from currentUser's favorites */
-function putFavoriteMarkupOnStories() {
-
-  $allStoriesList.children().toArray().forEach(li => {
-    const isFavorite = currentUser.favorites.some(fStory => li.id === fStory.storyId);
-    const favoriteEl = $("<span>").attr("id", "fav");
-    if (isFavorite) {
-      favoriteEl.text("unfavorite").addClass("favorited");
-    }
-    else {
-      favoriteEl.text("favorite");
-    }
-    $(li).append(favoriteEl);
-  });
-
-}
+$storyForm.on("submit", submitStory);
 
 /** handle favorite click */
 async function handleFavoriteClick(evt) {
-  if (!evt.target.tagName === "SPAN") return;
+  if (!$(evt.target).hasClass("favorite")) return;
 
   const $span = $(evt.target);
   const id = $span.parent()[0].id;
 
   if ($span[0].classList.contains("favorited")) {
     currentUser = await currentUser.removeFavoriteStory(id);
-    $span.text("favorite");
+    $span.text("Favorite");
   }
   else {
     currentUser = await currentUser.addFavoriteStory(id);
-    $span.text("unfavorite");
+    $span.text("Unfavorite");
   }
   $span[0].classList.toggle("favorited");
 }
 
 /** handle delete story click */
 async function handleDeleteClick(evt) {
-  if (!evt.target.tagName === "BUTTON") return;
+  if (evt.target.tagName !== "BUTTON") return;
 
   const $btn = $(evt.target);
   const id = $btn.parent()[0].id;
 
+  storyList.removeStory(id);
   await currentUser.removeOwnStory(id);
   $btn.parent().remove();
 }

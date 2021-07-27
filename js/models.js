@@ -74,20 +74,29 @@ class StoryList {
    */
 
   async addStory(user, newStory) {
+    try {
+      const response = await axios({
+        url: `${BASE_URL}/stories`,
+        method: "POST",
+        data: {
+          token: user.loginToken,
+          story: newStory,
+        }
+      });
+      const story = new Story(response.data.story);
+  
+      this.stories.push(story);
+      user.ownStories.push(story);
+      return story;
+    } catch (err) {
+      console.error("addStory failed: ", err);
+      return null;
+    }
+    
+  }
 
-    const response = await axios({
-      url: `${BASE_URL}/stories`,
-      method: "POST",
-      data: {
-        token: user.loginToken,
-        story: newStory,
-      }
-    });
-    const story = new Story(response.data.story);
-
-    this.stories.push(story);
-    user.ownStories.push(story);
-    return story;
+  removeStory(storyId) {
+    this.stories = this.stories.filter(story => story.storyId !== storyId);
   }
 }
 
@@ -258,8 +267,10 @@ class User {
 
     try {
 
-      await axios.delete(`${BASE_URL}/stories/${storyId}`, {
-        data: {"token": this.loginToken}
+      await axios({
+        url: `${BASE_URL}/stories/${storyId}`,
+        method: "DELETE",
+        params: {"token": this.loginToken},
       });
 
       this.ownStories = this.ownStories.filter(story => story.storyId !== storyId);

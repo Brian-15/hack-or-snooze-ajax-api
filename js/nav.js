@@ -36,10 +36,10 @@ function updateNavOnLogin() {
   $navUserProfile.text(`${currentUser.username}`).show();
 }
 
-/** handle form submission */
+/** show form submission */
 
 function navSubmitStoryClick() {
-  $('#story-form').show();
+  $storyForm.show();
   putStoriesOnPage();
 }
 
@@ -60,7 +60,6 @@ $navFavorites.click(handleNavFavorites);
 function handleNavStories() {
   hidePageComponents();
   putOwnStoriesOnPage();
-  $allStoriesList.unbind().click(handleDeleteClick);
 }
 
 $navMyStories.click(handleNavStories);

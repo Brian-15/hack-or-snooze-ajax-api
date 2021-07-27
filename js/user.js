@@ -111,11 +111,11 @@ function saveUserCredentialsInLocalStorage() {
 
 function updateUIOnUserLogin() {
   console.debug("updateUIOnUserLogin");
-
+  
   $signupForm.hide();
   $loginForm.hide();
-  putFavoriteMarkupOnStories();
   $allStoriesList.click(handleFavoriteClick);
+  $allStoriesList.click(handleDeleteClick);
   $allStoriesList.show();
 
   updateNavOnLogin();
