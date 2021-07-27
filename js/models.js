@@ -85,8 +85,10 @@ class StoryList {
       });
       const story = new Story(response.data.story);
   
-      this.stories.push(story);
+      this.stories.unshift(story);
       user.ownStories.push(story);
+      putStoriesOnPage();
+
       return story;
     } catch (err) {
       console.error("addStory failed: ", err);

@@ -99,7 +99,6 @@ function submitStory(evt) {
   
   storyList.addStory(currentUser, {title, author, url});
 
-  putStoriesOnPage();
   [title, url, author] = ["", "", ""];
 }
 
